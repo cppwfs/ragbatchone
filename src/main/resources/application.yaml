@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: ragbatchone
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sbdocs
+    username: admin
+    password: password
+  ai:
+  vectorstore:
+    pgvector:
+    index-type: HNSW
+    distance-type: COSINE_DISTANCE
+    dimensions: 1536
+  sql:
+    init:
+      mode: always
+  main:
+    web-application-type: none
+
+  batch:
+    jdbc:
+      initialize-schema: always
