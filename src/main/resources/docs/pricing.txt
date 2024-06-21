@@ -1,3 +1,0 @@
-foo=bar,baz=boo|Customers who deposit $5000 will get a 5% money market.
-foo=bar,baz=boo|Customers who deposit $10000 will get a 10% money market.
-foo=bar,baz=boo|All other customers get $3000 money market.
