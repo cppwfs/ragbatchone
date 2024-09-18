@@ -1,7 +1,8 @@
 package io.spring.ragbatchone;
 
-import io.spring.aibatchtools.TikaItemReader;
+import io.spring.aibatchtools.TikaItemReaderBuilder;
 import io.spring.aibatchtools.VectorStoreWriterBuilder;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -12,27 +13,29 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.task.configuration.EnableTask;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
+@EnableTask
 public class RagbatchoneConfiguration {
 
-    @Value("classpath:/docs/batchtalk.txt")
+    @Value("classpath:/docs/depdoc.pdf")
     private Resource textResource;
 
     @Bean
     public ItemReader reader() {
-        TikaItemReader tikaItemReader = new TikaItemReader();
-        tikaItemReader.setResource(new FileSystemResource("/Users/grenfro/Downloads/scdfguide.pdf"));
-        return tikaItemReader;
+        return new TikaItemReaderBuilder().name("PDFReader").
+                textSplitter(new TokenTextSplitter()).
+                resource(textResource).
+                build();
     }
 
     @Bean
-    public ItemWriter<Instruction> writer(VectorStore vectorStore) {
+    public ItemWriter writer(VectorStore vectorStore) {
         return new VectorStoreWriterBuilder().
                 contentFieldName("message").
                 metaDataFieldName("keyData").
@@ -49,11 +52,11 @@ public class RagbatchoneConfiguration {
     }
 
     @Bean
-    public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager, ItemWriter writer) {
+    public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager, VectorStore vectorStore) {
         return new StepBuilder("step1", jobRepository)
-                .<Instruction, Instruction>chunk(10, transactionManager)
+                .chunk(10, transactionManager)
                 .reader(reader())
-                .writer(writer)
+                .writer(writer(vectorStore))
                 .build();
     }
 }

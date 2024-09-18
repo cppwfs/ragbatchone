@@ -1,10 +1,6 @@
 spring:
   application:
     name: ragbatchone
-  datasource:
-    url: jdbc:postgresql://localhost:5432/sbdocs
-    username: admin
-    password: password
   ai:
   vectorstore:
     pgvector:
@@ -20,3 +16,7 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+
+logging:
+  level:
+    org.springframework.cloud.task: debug
