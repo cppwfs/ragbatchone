@@ -11,6 +11,8 @@ The purpose of this project is to demonstrate the usage of the TikaItemReader, V
 * RagbatchoneConfiguration - Provides the configuration for the batch job.
 
 == Build:
+
+Before building be sure to pull and build the https://github.com/cppwfs/aibatchtools[aibatchtools] project based on its https://github.com/cppwfs/aibatchtools/blob/main/README.adoc[README] instructions
 [source,shell]
 ----
 mvn clean package -DskipTests
