@@ -1,6 +1,7 @@
 = Sample Application that demonstrates AIBatchTools libaries
 
 The purpose of this project is to demonstrate the usage of the TikaItemReader, VectorStoreItemReader and their builders.
+
 == Requirements:
 
 * Java 17 or Above
