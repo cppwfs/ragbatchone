@@ -33,14 +33,25 @@ docker compose down
 ```
 
 == Run:
-Since this project is creating its embeddings for OpenAI you need to have the `SPRING_AI_OPENAI_API_KEY` set.
+
+* Since this project is creating its embeddings for OpenAI you need to have the `SPRING_AI_OPENAI_API_KEY` set.
+* Properties prefixed with `spring_datasource_` are the datasource settings for Batch and Task tables.
+* Properties prefixed with `vector_datasource_` are the datasource settings for the vector database.
+
 [source,shell]
 ----
 export SPRING_AI_OPENAI_API_KEY=<yourkey>
-export spring_datasource_url=jdbc:postgresql://localhost:5432/sbdocs
+
+export spring_datasource_url=jdbc:mariadb://localhost:3306/task
 export spring_datasource_username=admin
 export spring_datasource_password=password
-export spring_datasource_driverClassName=org.postgresql.Driver
+export spring_datasource_driverClassName=org.mariadb.jdbc.Driver
+
+export vector_datasource_url=jdbc:postgresql://localhost:5432/sbdocs
+export vector_datasource_username=admin
+export vector_datasource_password=password
+export vector_datasource_driverClassName=org.postgresql.Driver
+
 
 java -jar target/ragbatchone-0.0.1-SNAPSHOT.jar
 ----
